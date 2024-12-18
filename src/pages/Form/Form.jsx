@@ -18,15 +18,25 @@ const Form = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(employeeData);
-    alert("Employee added successfully!");
-    setEmployeeData({
-      name: "",
-      role: "",
-      department: "",
-      startDate: "",
-      location: "",
-    });
+
+    fetch("http://localhost:3001/employees", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(employeeData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        alert("Employee added successfully!");
+        console.log("Added Employee:", data);
+        setEmployeeData({
+          name: "",
+          role: "",
+          department: "",
+          startDate: "",
+          location: "",
+        });
+      })
+      .catch((error) => console.error("Error adding employee:", error));
   };
 
   return (
