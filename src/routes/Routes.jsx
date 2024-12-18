@@ -3,8 +3,8 @@ import Root from "../pages/Root/Root";
 import Login from "../pages/Login/Login";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import List from "../pages/List/List";
-import SinglePage from "../pages/SinglePage/SinglePage";
 import Form from "../pages/Form/Form";
+import EmployeeDetail from "../pages/EmployeeDetail/EmployeeDetail";
 
 const createRoutes = (isLoggedIn, loginHandler) => {
   return createBrowserRouter(
@@ -23,8 +23,8 @@ const createRoutes = (isLoggedIn, loginHandler) => {
             element: <List />,
           },
           {
-            path: "/employee/:id",
-            element: <SinglePage />,
+            path: "/employees/:id",
+            element: <EmployeeDetail />,
           },
           {
             path: "/new",

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import "./EmployeeCard.css";
 import Button from "../Button/Button";
+import { useNavigate } from "react-router-dom";
 
 const EmployeeCard = ({
+  id,
   name,
   role: initialRole,
   department: initialDepartment,
@@ -20,18 +22,26 @@ const EmployeeCard = ({
   const [editedDepartment, setEditedDepartment] = useState(department);
   const [editedLocation, setEditedLocation] = useState(location);
 
+  const navigate = useNavigate();
+
   // Toggle edit mode
   const toggleEditMode = () => {
     if (isEditing) {
-      // Save changes
-      setRole(editedRole);
-      setDepartment(editedDepartment);
-      setLocation(editedLocation);
-    } else {
-      // Reset edits to current values when entering edit mode
-      setEditedRole(role);
-      setEditedDepartment(department);
-      setEditedLocation(location);
+      fetch(`http://localhost:3001/employees/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          role: editedRole,
+          department: editedDepartment,
+          location: editedLocation,
+        }),
+      })
+        .then(() => {
+          setRole(editedRole);
+          setDepartment(editedDepartment);
+          setLocation(editedLocation);
+        })
+        .catch((error) => console.error("Error updating employee:", error));
     }
     setIsEditing((prev) => !prev);
   };
@@ -115,6 +125,9 @@ const EmployeeCard = ({
         </Button>
         <Button onClick={toggleEditMode} role="secondary">
           {isEditing ? "Save" : "Edit"}
+        </Button>
+        <Button onClick={() => navigate(`/employees/${id}`)} role="primary">
+          See More
         </Button>
       </div>
     </div>
