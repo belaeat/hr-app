@@ -6,7 +6,7 @@
       "role": "Frontend Developer",
       "department": "Development",
       "startDate": "2018-08-01",
-      "location": "Pasila"
+      "location": "Helsinki"
     },
     {
       "id": "2",
@@ -79,14 +79,6 @@
       "department": "DevOps",
       "startDate": "2017-09-10",
       "location": "Rovaniemi"
-    },
-    {
-      "id": "c732",
-      "name": "Md Belaeat Hossain ",
-      "role": "Developer",
-      "department": "IT",
-      "startDate": "2024-12-31",
-      "location": "Pasila"
     }
   ]
 }
