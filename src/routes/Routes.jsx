@@ -23,6 +23,10 @@ const createRoutes = (isLoggedIn, loginHandler) => {
             element: <List />,
           },
           {
+            path: "employees",
+            element: <List></List>,
+          },
+          {
             path: "/employees/:id",
             element: <EmployeeDetail />,
           },
