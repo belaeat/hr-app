@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./EmployeeDetail.css";
 
@@ -6,29 +6,51 @@ const EmployeeDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [employee, setEmployee] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/employees/${id}`)
-      .then((res) => res.json())
-      .then((data) => setEmployee(data))
-      .catch((error) => console.error("Error fetching employee:", error));
+    const fetchEmployeeDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/employees/${id}`);
+        if (!response.ok) {
+          throw new Error("Employee not found");
+        }
+        const data = await response.json();
+        setEmployee(data);
+      } catch (err) {
+        console.error("Error fetching employee details:", err.message);
+        setError(err.message);
+      }
+    };
+    fetchEmployeeDetails();
   }, [id]);
 
+  if (error) {
+    return (
+      <div className="employee-detail">
+        <p>{error}</p>
+        <button onClick={() => navigate("/employees")}>Back to List</button>
+      </div>
+    );
+  }
+
+  if (!employee) {
+    return <p>Loading...</p>;
+  }
+
   return (
-    <div>
-      <h2>Employee Details</h2>
-      {employee ? (
-        <div className="employee-details">
-          <p>Name: {employee.name}</p>
-          <p>Role: {employee.role}</p>
-          <p>Department: {employee.department}</p>
-          <p>Location: {employee.location}</p>
-          <p>Start Date: {employee.startDate}</p>
-          <button onClick={() => navigate("/")}>Back to List</button>
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+    <div className="employee-detail">
+      <img
+        src={`https://avatar.iran.liara.run/public/${id}`}
+        alt={`${employee.name}'s avatar`}
+        className="avatar"
+      />
+      <h2>{employee.name}</h2>
+      <p>Role: {employee.role}</p>
+      <p>Department: {employee.department}</p>
+      <p>Location: {employee.location}</p>
+      <p>Start Date: {employee.startDate}</p>
+      <button onClick={() => navigate("/")}>Back to List</button>
     </div>
   );
 };

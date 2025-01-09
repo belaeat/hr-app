@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./EmployeeCard.css";
 import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
@@ -15,18 +15,20 @@ const EmployeeCard = ({
   const [role, setRole] = useState(initialRole);
   const [department, setDepartment] = useState(initialDepartment);
   const [location, setLocation] = useState(initialLocation);
+  const [avatar, setAvatar] = useState("");
 
   // Editable states
   const [isEditing, setIsEditing] = useState(false);
-  const [editedRole, setEditedRole] = useState(role);
-  const [editedDepartment, setEditedDepartment] = useState(department);
-  const [editedLocation, setEditedLocation] = useState(location);
+  const [editedRole, setEditedRole] = useState(initialRole);
+  const [editedDepartment, setEditedDepartment] = useState(initialDepartment);
+  const [editedLocation, setEditedLocation] = useState(initialLocation);
 
   const navigate = useNavigate();
 
-  // Toggle edit mode
+  // Handle Edit Mode Toggle and Save Changes
   const toggleEditMode = () => {
     if (isEditing) {
+      // Saving changes to the server
       fetch(`http://localhost:3001/employees/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -51,7 +53,7 @@ const EmployeeCard = ({
     department ? department.toLowerCase().replace(/\s+/g, "-") : "general"
   }`;
 
-  // Promote, Demote and Team Lead
+  // Promote/Demote
   const promoteToTeamLead = () => {
     setRole((prevRole) =>
       prevRole === "Team Lead" ? initialRole : "Team Lead"
@@ -72,51 +74,74 @@ const EmployeeCard = ({
   const isProbation = yearsWorked() < 0.5;
   const isAnniversary = roundedYearsWorked > 0 && roundedYearsWorked % 5 === 0;
 
+  // Fetch avatar
+  useEffect(() => {
+    const fetchAvatar = async () => {
+      try {
+        const avatarURL = `https://avatar.iran.liara.run/public/${id}`;
+        setAvatar(avatarURL);
+      } catch (error) {
+        console.error("Error fetching avatar:", error);
+      }
+    };
+    fetchAvatar();
+  }, [id]);
+
   return (
     <div className={departmentClass}>
-      <h3>
-        {name} {role === "Team Lead" && <span>⭐</span>}
-      </h3>
-      {isEditing ? (
-        <>
-          <label>
-            Role:{" "}
-            <input
-              type="text"
-              value={editedRole}
-              onChange={(e) => setEditedRole(e.target.value)}
-            />
-          </label>
-          <label>
-            Department:{" "}
-            <input
-              type="text"
-              value={editedDepartment}
-              onChange={(e) => setEditedDepartment(e.target.value)}
-            />
-          </label>
-          <label>
-            Location:{" "}
-            <input
-              type="text"
-              value={editedLocation}
-              onChange={(e) => setEditedLocation(e.target.value)}
-            />
-          </label>
-        </>
-      ) : (
-        <>
-          <p>Role: {role}</p>
-          <p>Department: {department}</p>
-          <p>Location: {location}</p>
-        </>
-      )}
-      <p>Start Date: {startDate}</p>
-      <p>Years Worked: {roundedYearsWorked}</p>
-      {isProbation && <p className="reminder">📋 Schedule probation review</p>}
-      {isAnniversary && (
-        <p className="reminder">🎉 Schedule recognition meeting</p>
-      )}
+      <img
+        src={avatar || "https://via.placeholder.com/150"}
+        alt={`${name}'s avatar`}
+        className="avatar"
+      />
+
+      <div className="text-content">
+        <h3>{name}</h3>
+        {isEditing ? (
+          <div className="edit">
+            <label>
+              Role:{" "}
+              <input
+                type="text"
+                value={editedRole}
+                onChange={(e) => setEditedRole(e.target.value)}
+              />
+            </label>
+            <label>
+              Department:{" "}
+              <input
+                type="text"
+                value={editedDepartment}
+                onChange={(e) => setEditedDepartment(e.target.value)}
+              />
+            </label>
+            <label>
+              Location:{" "}
+              <input
+                type="text"
+                value={editedLocation}
+                onChange={(e) => setEditedLocation(e.target.value)}
+              />
+            </label>
+          </div>
+        ) : (
+          <>
+            <p>Role: {role}</p>
+            <p>Department: {department}</p>
+            <p>Location: {location}</p>
+          </>
+        )}
+        <p className="start-date">Start Date: {startDate}</p>
+        <p className="years-worked">Years Worked: {roundedYearsWorked}</p>
+        {isProbation && (
+          <p className="reminder">📋 Schedule probation review</p>
+        )}
+        {isAnniversary && (
+          <p className="reminder">🎉 Schedule recognition meeting</p>
+        )}
+      </div>
+
+      {/* Buttons */}
       <div className="buttons">
         <Button onClick={promoteToTeamLead} role="primary">
           {role === "Team Lead"
