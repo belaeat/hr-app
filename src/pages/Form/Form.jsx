@@ -1,42 +1,38 @@
 import { useState } from "react";
 import Button from "../../components/Button/Button";
 import "./Form.css";
+import useAxios from "../../hooks/useAxios";
 
 const Form = () => {
-  const [employeeData, setEmployeeData] = useState({
+  const { post } = useAxios("http://localhost:3001");
+  const [formData, setFormData] = useState({
     name: "",
     role: "",
     department: "",
-    startDate: "",
     location: "",
+    startDate: "",
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setEmployeeData((prevData) => ({ ...prevData, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    fetch("http://localhost:3001/employees", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(employeeData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        alert("Employee added successfully!");
-        console.log("Added Employee:", data);
-        setEmployeeData({
-          name: "",
-          role: "",
-          department: "",
-          startDate: "",
-          location: "",
-        });
-      })
-      .catch((error) => console.error("Error adding employee:", error));
+    try {
+      await post("/employees", formData);
+      alert("Employee added successfully!");
+      setFormData({
+        name: "",
+        role: "",
+        department: "",
+        location: "",
+        startDate: "",
+      });
+    } catch (error) {
+      console.error("Error adding employee:", error);
+    }
   };
 
   return (
@@ -44,25 +40,17 @@ const Form = () => {
       <h2>Add New Employee</h2>
       <label>
         Name:{" "}
-        <input
-          name="name"
-          value={employeeData.name}
-          onChange={handleInputChange}
-        />
+        <input name="name" value={formData.name} onChange={handleInputChange} />
       </label>
       <label>
         Role:{" "}
-        <input
-          name="role"
-          value={employeeData.role}
-          onChange={handleInputChange}
-        />
+        <input name="role" value={formData.role} onChange={handleInputChange} />
       </label>
       <label>
         Department:{" "}
         <input
           name="department"
-          value={employeeData.department}
+          value={formData.department}
           onChange={handleInputChange}
         />
       </label>
@@ -71,7 +59,7 @@ const Form = () => {
         <input
           type="date"
           name="startDate"
-          value={employeeData.startDate}
+          value={formData.startDate}
           onChange={handleInputChange}
         />
       </label>
@@ -79,7 +67,7 @@ const Form = () => {
         Location:{" "}
         <input
           name="location"
-          value={employeeData.location}
+          value={formData.location}
           onChange={handleInputChange}
         />
       </label>

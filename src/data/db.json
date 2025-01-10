@@ -79,6 +79,14 @@
       "department": "DevOps",
       "startDate": "2017-09-10",
       "location": "Rovaniemi"
+    },
+    {
+      "id": "f1d3",
+      "name": "Md Belaeat Hossain",
+      "role": "Developer",
+      "department": "Development",
+      "location": "Pasila",
+      "startDate": "2025-01-01"
     }
   ]
 }
