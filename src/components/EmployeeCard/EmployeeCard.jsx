@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./EmployeeCard.css";
+
+import styles from "./EmployeeCard.module.css";
 import Button from "../Button/Button";
 import useAxios from "../../hooks/useAxios";
 import useEmployeeStatus from "../../hooks/useEmployeeStatus";
@@ -38,11 +39,6 @@ const EmployeeCard = ({
     fetchAvatar();
   }, [id]);
 
-  // Department class
-  const departmentClass = `employee-card ${
-    department ? department.toLowerCase().replace(/\s+/g, "-") : "general"
-  }`;
-
   // Edit data
   const toggleEditMode = async () => {
     if (isEditing) {
@@ -77,13 +73,17 @@ const EmployeeCard = ({
   const isAnniversary = roundedYearsWorked > 0 && roundedYearsWorked % 5 === 0;
 
   return (
-    <div className={departmentClass}>
+    <div
+      className={`${styles["employee-card"]} ${
+        styles[department.toLowerCase()]
+      }`}
+    >
       <img
         src={avatar || "https://via.placeholder.com/150"}
         alt={`${name}'s avatar`}
-        className="avatar"
+        className={styles.avatar}
       />
-      <div className="text-content">
+      <div className={styles["text-content"]}>
         <h3>{name}</h3>
         {isEditing ? (
           <div className="edit">
@@ -130,7 +130,7 @@ const EmployeeCard = ({
       </div>
 
       {/* Buttons */}
-      <div className="buttons">
+      <div className={styles.buttons}>
         <Button onClick={toggleTeamLead} role="primary">
           {role === "Team Lead"
             ? "Demote from Team Lead"
