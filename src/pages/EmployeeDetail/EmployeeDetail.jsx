@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "./EmployeeDetail.css";
+// import "./EmployeeDetail.css";
+import styles from "./EmployeeDetail.module.css";
 
 const EmployeeDetail = () => {
   const { id } = useParams();
@@ -39,11 +40,11 @@ const EmployeeDetail = () => {
   }
 
   return (
-    <div className="employee-detail">
+    <div className={styles["employee-detail"]}>
       <img
         src={`https://avatar.iran.liara.run/public/${id}`}
         alt={`${employee.name}'s avatar`}
-        className="avatar"
+        className={styles.avatar}
       />
       <h2>{employee.name}</h2>
       <p>Role: {employee.role}</p>
