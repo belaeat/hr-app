@@ -1,7 +1,9 @@
 import { useState } from "react";
 import Button from "../../components/Button/Button";
 import "./Form.css";
+
 import useAxios from "../../hooks/useAxios";
+import { useNavigate } from "react-router-dom";
 
 const Form = () => {
   const { post } = useAxios("http://localhost:3001");
@@ -12,6 +14,7 @@ const Form = () => {
     location: "",
     startDate: "",
   });
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -30,6 +33,7 @@ const Form = () => {
         location: "",
         startDate: "",
       });
+      navigate("/");
     } catch (error) {
       console.error("Error adding employee:", error);
     }

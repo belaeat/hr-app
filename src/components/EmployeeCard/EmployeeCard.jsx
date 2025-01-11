@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./EmployeeCard.css";
 import Button from "../Button/Button";
-import { useNavigate } from "react-router-dom";
+import useAxios from "../../hooks/useAxios";
+import useEmployeeStatus from "../../hooks/useEmployeeStatus";
 
 const EmployeeCard = ({
   id,
@@ -11,68 +13,17 @@ const EmployeeCard = ({
   startDate,
   location: initialLocation,
 }) => {
-  // State for role, department, and location
-  const [role, setRole] = useState(initialRole);
   const [department, setDepartment] = useState(initialDepartment);
   const [location, setLocation] = useState(initialLocation);
   const [avatar, setAvatar] = useState("");
-
-  // Editable states
   const [isEditing, setIsEditing] = useState(false);
   const [editedRole, setEditedRole] = useState(initialRole);
-  const [editedDepartment, setEditedDepartment] = useState(initialDepartment);
-  const [editedLocation, setEditedLocation] = useState(initialLocation);
+  const [editedDepartment, setEditedDepartment] = useState(department);
+  const [editedLocation, setEditedLocation] = useState(location);
 
+  const { patch } = useAxios("http://localhost:3001");
+  const { role, toggleTeamLead } = useEmployeeStatus(initialRole, id, patch);
   const navigate = useNavigate();
-
-  // Handle Edit Mode Toggle and Save Changes
-  const toggleEditMode = () => {
-    if (isEditing) {
-      // Saving changes to the server
-      fetch(`http://localhost:3001/employees/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          role: editedRole,
-          department: editedDepartment,
-          location: editedLocation,
-        }),
-      })
-        .then(() => {
-          setRole(editedRole);
-          setDepartment(editedDepartment);
-          setLocation(editedLocation);
-        })
-        .catch((error) => console.error("Error updating employee:", error));
-    }
-    setIsEditing((prev) => !prev);
-  };
-
-  // Department class
-  const departmentClass = `employee-card ${
-    department ? department.toLowerCase().replace(/\s+/g, "-") : "general"
-  }`;
-
-  // Promote/Demote
-  const promoteToTeamLead = () => {
-    setRole((prevRole) =>
-      prevRole === "Team Lead" ? initialRole : "Team Lead"
-    );
-  };
-
-  // Calculate years worked
-  const yearsWorked = () => {
-    const start = new Date(startDate);
-    const today = new Date();
-    const diff = today - start;
-    return diff / (1000 * 60 * 60 * 24 * 365);
-  };
-
-  const roundedYearsWorked = Math.floor(yearsWorked());
-
-  // Probation or anniversary reminders
-  const isProbation = yearsWorked() < 0.5;
-  const isAnniversary = roundedYearsWorked > 0 && roundedYearsWorked % 5 === 0;
 
   // Fetch avatar
   useEffect(() => {
@@ -87,6 +38,44 @@ const EmployeeCard = ({
     fetchAvatar();
   }, [id]);
 
+  // Department class
+  const departmentClass = `employee-card ${
+    department ? department.toLowerCase().replace(/\s+/g, "-") : "general"
+  }`;
+
+  // Edit data
+  const toggleEditMode = async () => {
+    if (isEditing) {
+      try {
+        await patch(`/employees/${id}`, {
+          role: editedRole,
+          department: editedDepartment,
+          location: editedLocation,
+        });
+        setEditedRole(editedRole);
+        setDepartment(editedDepartment);
+        setLocation(editedLocation);
+      } catch (error) {
+        console.error("Error updating employee:", error);
+      }
+    }
+    setIsEditing((prev) => !prev);
+  };
+
+  // Calculate years worked
+  const yearsWorked = () => {
+    const start = new Date(startDate);
+    const today = new Date();
+    const diff = today - start;
+    return Math.floor(diff / (1000 * 60 * 60 * 24 * 365)); // Convert to years
+  };
+
+  const roundedYearsWorked = yearsWorked();
+
+  // Probation or anniversary reminders
+  const isProbation = yearsWorked() < 0.5;
+  const isAnniversary = roundedYearsWorked > 0 && roundedYearsWorked % 5 === 0;
+
   return (
     <div className={departmentClass}>
       <img
@@ -94,7 +83,6 @@ const EmployeeCard = ({
         alt={`${name}'s avatar`}
         className="avatar"
       />
-
       <div className="text-content">
         <h3>{name}</h3>
         {isEditing ? (
@@ -143,7 +131,7 @@ const EmployeeCard = ({
 
       {/* Buttons */}
       <div className="buttons">
-        <Button onClick={promoteToTeamLead} role="primary">
+        <Button onClick={toggleTeamLead} role="primary">
           {role === "Team Lead"
             ? "Demote from Team Lead"
             : "Promote to Team Lead"}
