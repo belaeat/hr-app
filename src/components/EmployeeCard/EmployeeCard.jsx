@@ -85,7 +85,7 @@ const EmployeeCard = ({
       <div className={styles["text-content"]}>
         <h3>{name}</h3>
         {isEditing ? (
-          <div className="edit">
+          <div className={styles.edit}>
             <label>
               Role:{" "}
               <input
