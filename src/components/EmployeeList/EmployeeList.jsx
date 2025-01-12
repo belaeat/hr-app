@@ -1,4 +1,3 @@
-// import "./EmployeeList.css";
 import styles from "./EmployeeList.module.css";
 import EmployeeCard from "../EmployeeCard/EmployeeCard";
 import { useEffect, useState } from "react";
@@ -7,7 +6,7 @@ const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/employees")
+    fetch("https://hr-app-server-tnfp.onrender.com/api/employees")
       .then((res) => res.json())
       .then((data) => setEmployees(data))
       .catch((error) => console.error("Error fetching employees:", error));

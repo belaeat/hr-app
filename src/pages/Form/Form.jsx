@@ -5,7 +5,7 @@ import useAxios from "../../hooks/useAxios";
 import { useNavigate } from "react-router-dom";
 
 const Form = () => {
-  const { post } = useAxios("http://localhost:3001");
+  const { post } = useAxios("https://hr-app-server-tnfp.onrender.com/api");
   const [formData, setFormData] = useState({
     name: "",
     role: "",
