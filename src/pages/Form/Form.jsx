@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Button from "../../components/Button/Button";
-import "./Form.css";
-
+import styles from "./Form.module.css";
 import useAxios from "../../hooks/useAxios";
 import { useNavigate } from "react-router-dom";
 
@@ -40,15 +39,27 @@ const Form = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="employeeForm">
+    <form onSubmit={handleSubmit} className={styles.form}>
       <h2>Add New Employee</h2>
-      <label>
+      <label className={styles.label}>
         Name:{" "}
-        <input name="name" value={formData.name} onChange={handleInputChange} />
+        <input
+          name="name"
+          value={formData.name}
+          onChange={handleInputChange}
+          className={styles.employeeForm_input}
+          required
+        />
       </label>
       <label>
         Role:{" "}
-        <input name="role" value={formData.role} onChange={handleInputChange} />
+        <input
+          name="role"
+          value={formData.role}
+          onChange={handleInputChange}
+          className={styles.employeeForm_input}
+          required
+        />
       </label>
       <label>
         Department:{" "}
@@ -56,6 +67,8 @@ const Form = () => {
           name="department"
           value={formData.department}
           onChange={handleInputChange}
+          className={styles.employeeForm_input}
+          required
         />
       </label>
       <label>
@@ -65,6 +78,8 @@ const Form = () => {
           name="startDate"
           value={formData.startDate}
           onChange={handleInputChange}
+          className={styles.employeeForm_input}
+          required
         />
       </label>
       <label>
@@ -73,6 +88,8 @@ const Form = () => {
           name="location"
           value={formData.location}
           onChange={handleInputChange}
+          className={styles.employeeForm_input}
+          required
         />
       </label>
       <Button text="Add New" type="submit" />
