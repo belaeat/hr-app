@@ -21,7 +21,7 @@ const EmployeeCard = ({
   const [editedDepartment, setEditedDepartment] = useState(department);
   const [editedLocation, setEditedLocation] = useState(location);
 
-  const { patch } = useAxios("https://hr-app-server-tnfp.onrender.com/api");
+  const { patch } = useAxios("https://hr-app-server-9bwz.onrender.com/api");
   const { role, toggleTeamLead } = useEmployeeStatus(initialRole, id, patch);
   const navigate = useNavigate();
 
@@ -65,7 +65,7 @@ const EmployeeCard = ({
     return Math.floor(diff / (1000 * 60 * 60 * 24 * 365)); // Convert to years
   };
 
-  const roundedYearsWorked = yearsWorked();
+  const roundedYearsWorked = Math.floor(yearsWorked());
 
   // Probation or anniversary reminders
   const isProbation = yearsWorked() < 0.5;

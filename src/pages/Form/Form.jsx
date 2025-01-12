@@ -5,7 +5,7 @@ import useAxios from "../../hooks/useAxios";
 import { useNavigate } from "react-router-dom";
 
 const Form = () => {
-  const { post } = useAxios("https://hr-app-server-tnfp.onrender.com/api");
+  const { post } = useAxios("https://hr-app-server-9bwz.onrender.com/api");
   const [formData, setFormData] = useState({
     name: "",
     role: "",

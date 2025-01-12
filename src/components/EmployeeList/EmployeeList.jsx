@@ -6,7 +6,7 @@ const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
-    fetch("https://hr-app-server-tnfp.onrender.com/api/employees")
+    fetch("https://hr-app-server-9bwz.onrender.com/api/employees")
       .then((res) => res.json())
       .then((data) => setEmployees(data))
       .catch((error) => console.error("Error fetching employees:", error));

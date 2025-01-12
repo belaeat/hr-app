@@ -12,7 +12,7 @@ const EmployeeDetail = () => {
     const fetchEmployeeDetails = async () => {
       try {
         const response = await fetch(
-          `https://hr-app-server-tnfp.onrender.com/api/employees/${id}`
+          `https://hr-app-server-9bwz.onrender.com/api/employees/${id}`
         );
         if (!response.ok) {
           throw new Error("Employee not found");
