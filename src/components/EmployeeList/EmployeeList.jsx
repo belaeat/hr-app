@@ -1,4 +1,5 @@
-import "./EmployeeList.css";
+// import "./EmployeeList.css";
+import styles from "./EmployeeList.module.css";
 import EmployeeCard from "../EmployeeCard/EmployeeCard";
 import { useEffect, useState } from "react";
 
@@ -13,7 +14,7 @@ const EmployeeList = () => {
   }, []);
 
   return (
-    <div className="employee-list">
+    <div className={styles.employee_list}>
       {employees.map((employee) => (
         <EmployeeCard key={employee.id} {...employee} />
       ))}
