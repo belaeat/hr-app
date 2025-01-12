@@ -41,7 +41,7 @@ const Form = () => {
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <h2>Add New Employee</h2>
-      <label className={styles.label}>
+      <label>
         Name:{" "}
         <input
           name="name"
