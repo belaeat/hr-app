@@ -1,4 +1,3 @@
-// import "./Button.css";
 import styles from "./Button.module.css";
 
 const Button = ({ type = "button", role = "primary", children, onClick }) => {
