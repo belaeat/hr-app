@@ -21,7 +21,7 @@ const EmployeeCard = ({
   const [editedDepartment, setEditedDepartment] = useState(department);
   const [editedLocation, setEditedLocation] = useState(location);
 
-  const { patch } = useAxios("http://localhost:3001");
+  const { patch } = useAxios("https://hr-app-server-tnfp.onrender.com/api");
   const { role, toggleTeamLead } = useEmployeeStatus(initialRole, id, patch);
   const navigate = useNavigate();
 

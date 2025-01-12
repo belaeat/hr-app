@@ -11,7 +11,9 @@ const EmployeeDetail = () => {
   useEffect(() => {
     const fetchEmployeeDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/employees/${id}`);
+        const response = await fetch(
+          `https://hr-app-server-tnfp.onrender.com/api/employees/${id}`
+        );
         if (!response.ok) {
           throw new Error("Employee not found");
         }
