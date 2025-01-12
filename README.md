@@ -1,4 +1,4 @@
-## HR App
+## HR App - Overview
 
 A simple HR application for managing and displaying employee details.
 
@@ -13,7 +13,55 @@ A simple HR application for managing and displaying employee details.
 - Admin can promote or demote any employee.
 - Special notification for probation review or anniversary.
 
+## How to run it locally:
+
+### Step 1:
+
+- clone the repository
+
+```shell
+git clone https://github.com/belaeat/hr-app
+```
+
+### Step 2:
+
+- Install npm (node package manager)
+
+```shell
+ npm install
+```
+
+### Step 3:
+
+- Install vite
+
+```shell
+ npm install vite
+```
+
+### Step 4:
+
+- Run the project
+
+```shell
+ npm run dev
+```
+
+- Install Axios (if needed)
+
+```shell
+ npm install axios
+```
+
+<hr>
+
 ### Login Credentials
 
 - Username: admin
 - Password: password
+
+<hr>
+
+#### Live Website Link: https://hr-app-belaeat.netlify.app/
+
+#### Server Repo Link: https://github.com/belaeat/hr-app-server
