@@ -4,6 +4,7 @@ A simple HR application for managing and displaying employee details.
 
 ### New features
 
+- Protected route. Only admin can login and see the employee list.
 - Destructured props for cleaner code.
 - Reusable `Button` component with customizable styles.
 - Editable fields for role, department, and location.

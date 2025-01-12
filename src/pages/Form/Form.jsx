@@ -92,7 +92,9 @@ const Form = () => {
           required
         />
       </label>
-      <Button text="Add New" type="submit" />
+      <Button text="Add New" type="submit">
+        Add New Employee
+      </Button>
     </form>
   );
 };
