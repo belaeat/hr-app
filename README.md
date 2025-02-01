@@ -2,9 +2,11 @@
 
 A simple HR application for managing and displaying employee details.
 
+### Note: I deployed my JSON server on Render.com and I am a free user, it might take up to 50 seconds to fetch the data from the backend. Sorry for the inconvenience.
+
 ### New features
 
-- Protected route. Only admin can login and see the employee list.
+- Protected route. Only the admin can log in and see the employee list.
 - Destructured props for cleaner code.
 - Reusable `Button` component with customizable styles.
 - Editable fields for role, department, and location.
